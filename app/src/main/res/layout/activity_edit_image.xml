@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditImageActivity">
+    tools:context=".activities.editimage.EditImageActivity">
 
     <LinearLayout
         android:id="@+id/layoutHeader"
@@ -50,6 +50,15 @@
         android:scaleType="centerCrop"
         app:layout_constraintBottom_toTopOf="@+id/filterRecyclerView"
         app:layout_constraintTop_toBottomOf="@id/layoutHeader" />
+
+    <ProgressBar
+        android:id="@+id/previewProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/imagePreview"
+        app:layout_constraintEnd_toEndOf="@id/imagePreview"
+        app:layout_constraintStart_toStartOf="@id/imagePreview"
+        app:layout_constraintTop_toTopOf="@id/imagePreview"></ProgressBar>
 
 
     <androidx.recyclerview.widget.RecyclerView
