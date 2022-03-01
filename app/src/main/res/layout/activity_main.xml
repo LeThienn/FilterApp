@@ -10,12 +10,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
-        android:src="@drawable/landing_background_image"></androidx.appcompat.widget.AppCompatImageView>
+        android:src="@drawable/landing_background_image" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/landing_background"></View>
+        android:background="@drawable/landing_background" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonViewSavedImages"
@@ -30,7 +30,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_12ssp"
         app:cornerRadius="@dimen/_20sdp"
-        app:layout_constraintBottom_toBottomOf="parent"></com.google.android.material.button.MaterialButton>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonEditNewImage"
@@ -45,7 +45,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/_12ssp"
         app:cornerRadius="@dimen/_20sdp"
-        app:layout_constraintBottom_toTopOf="@id/buttonViewSavedImages"></com.google.android.material.button.MaterialButton>
+        app:layout_constraintBottom_toTopOf="@id/buttonViewSavedImages" />
 
     <TextView
         android:id="@+id/textSubTitle"
@@ -59,7 +59,7 @@
         android:text="@string/let_s_create_something_new"
         android:textColor="@color/white"
         android:textSize="@dimen/_13ssp"
-        app:layout_constraintBottom_toTopOf="@id/buttonEditNewImage"></TextView>
+        app:layout_constraintBottom_toTopOf="@id/buttonEditNewImage" />
 
     <TextView
         android:id="@+id/textTitle"
@@ -73,6 +73,6 @@
         android:text="@string/image_filters"
         android:textColor="@color/white"
         android:textSize="@dimen/_20ssp"
-        app:layout_constraintBottom_toTopOf="@id/textSubTitle"></TextView>
+        app:layout_constraintBottom_toTopOf="@id/textSubTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
