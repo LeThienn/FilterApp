@@ -4,9 +4,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.os.Environment
+import androidx.core.content.FileProvider
 import com.example.filterapp.data.ImageFilter
 import jp.co.cyberagent.android.gpuimage.GPUImage
 import jp.co.cyberagent.android.gpuimage.filter.*
+import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
 
 class EditImageRepositoryImpl(private val context: Context) : EditImageRepository {
@@ -416,10 +420,37 @@ class EditImageRepositoryImpl(private val context: Context) : EditImageRepositor
             val width = context.resources.displayMetrics.widthPixels
             val height = ((originalBitmap.height * width) / originalBitmap.width)
             return Bitmap.createScaledBitmap(originalBitmap, width, height, false)
-        }?: return null
+        } ?: return null
     }
 
     private fun getInputStreamFromUri(uri: Uri): InputStream? {
         return context.contentResolver.openInputStream(uri)
+    }
+
+    override suspend fun saveFilteredImage(filteredBitmap: Bitmap): Uri? {
+        return try {
+            val mediaStorageDirection = File(
+                context.getExternalFilesDir(Environment.DIRECTORY_PICTURES),
+                "Saved Images"
+            )
+            if (!mediaStorageDirection.exists()) {
+                mediaStorageDirection.mkdir()
+            }
+            val fileName = "IMG_${System.currentTimeMillis()}.jpg"
+            val file = File(mediaStorageDirection, fileName)
+            saveFile(file, filteredBitmap)
+            FileProvider.getUriForFile(context, "${context.packageName}.provider", file)
+        } catch (exception: Exception) {
+            null
+        }
+    }
+
+    private fun saveFile(file: File, bitmap: Bitmap) {
+        with(FileOutputStream(file)) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, this)
+            flush()
+            close()
+        }
+
     }
 }

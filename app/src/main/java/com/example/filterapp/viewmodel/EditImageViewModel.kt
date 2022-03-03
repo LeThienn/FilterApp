@@ -89,4 +89,37 @@ class EditImageViewModel(private val editImageRepository: EditImageRepository) :
         val error: String?
     )
     // endregion
+
+    // region: Save Filtered image
+    private val saveFilteredImageDataState = MutableLiveData<SaveFilteredImageDataState>()
+    val saveFilteredImageUiState: LiveData<SaveFilteredImageDataState> get() = saveFilteredImageDataState
+
+    fun saveFilteredImage(filteredBitmap: Bitmap){
+        Coroutines.io {
+            runCatching {
+                emitSaveFilteredImageUiState(isLoading = true)
+                editImageRepository.saveFilteredImage(filteredBitmap)
+            }.onSuccess { saveImageUri ->
+                emitSaveFilteredImageUiState(uri = saveImageUri)
+            }.onFailure {
+                emitSaveFilteredImageUiState(error = it.message.toString())
+            }
+        }
+    }
+
+    private fun emitSaveFilteredImageUiState(
+        isLoading: Boolean = false,
+        uri: Uri? = null,
+        error: String? = null
+    ){
+        val dataState = SaveFilteredImageDataState(isLoading, uri, error)
+        saveFilteredImageDataState.postValue(dataState)
+    }
+
+    data class SaveFilteredImageDataState(
+        val isLoading: Boolean,
+        val uri: Uri?,
+        val error: String?
+    )
+    // endregion
 }

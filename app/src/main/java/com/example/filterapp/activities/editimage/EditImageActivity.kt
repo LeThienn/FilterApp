@@ -1,11 +1,13 @@
 package com.example.filterapp.activities.editimage
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
+import com.example.filterapp.activities.filteredimage.FilteredImageActivity
 import com.example.filterapp.activities.main.MainActivity
 import com.example.filterapp.adapters.ImageFiltersAdapter
 import com.example.filterapp.data.ImageFilter
@@ -18,6 +20,10 @@ import jp.co.cyberagent.android.gpuimage.GPUImage
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class EditImageActivity : AppCompatActivity(), ImageFilterListener {
+
+    companion object{
+        const val KEY_FILTERED_IMAGE_URI = "filteredImageUri"
+    }
 
     private lateinit var binding: ActivityEditImageBinding
 
@@ -78,6 +84,29 @@ class EditImageActivity : AppCompatActivity(), ImageFilterListener {
         filterBitmap.observe(this, { bitmap ->
             binding.imagePreview.setImageBitmap(bitmap)
         })
+        viewModel.saveFilteredImageUiState.observe(this, {
+            val  saveFilteredImageDataState = it ?: return@observe
+            if(saveFilteredImageDataState.isLoading){
+                binding.imageSave.visibility = View.GONE
+                binding.savingProgressBar.visibility = View.VISIBLE
+            }else{
+                binding.savingProgressBar.visibility = View.GONE
+                binding.imageSave.visibility = View.VISIBLE
+            }
+            saveFilteredImageDataState.uri?.let { saveImageUri ->
+                Intent(
+                    applicationContext,
+                    FilteredImageActivity::class.java
+                ).also { filteredImageIntent ->
+                    filteredImageIntent.putExtra(KEY_FILTERED_IMAGE_URI, saveImageUri)
+                    startActivity(filteredImageIntent)
+                }
+            }?:kotlin.run {
+                saveFilteredImageDataState.error?.let { error ->
+                    displayToast(error)
+                }
+            }
+        })
     }
 
     private fun prepareImagePreview() {
@@ -89,6 +118,12 @@ class EditImageActivity : AppCompatActivity(), ImageFilterListener {
 
     private fun setListeners() {
         binding.imageBack.setOnClickListener { onBackPressed() }
+
+        binding.imageSave.setOnClickListener {
+            filterBitmap.value?.let { bitmap ->
+                viewModel.saveFilteredImage(bitmap)
+            }
+        }
 
         /*
         this will show original image when we long click the imageview util we release click
