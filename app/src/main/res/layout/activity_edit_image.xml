@@ -48,7 +48,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/filterRecyclerView"
+        app:layout_constraintBottom_toTopOf="@+id/filtersRecyclerView"
         app:layout_constraintTop_toBottomOf="@id/layoutHeader" />
 
     <ProgressBar
@@ -58,11 +58,11 @@
         app:layout_constraintBottom_toBottomOf="@id/imagePreview"
         app:layout_constraintEnd_toEndOf="@id/imagePreview"
         app:layout_constraintStart_toStartOf="@id/imagePreview"
-        app:layout_constraintTop_toTopOf="@id/imagePreview"></ProgressBar>
+        app:layout_constraintTop_toTopOf="@id/imagePreview" />
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/filterRecyclerView"
+        android:id="@+id/filtersRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_105sdp"
         android:clipToPadding="false"
@@ -72,9 +72,19 @@
         android:paddingTop="@dimen/_10sdp"
         android:paddingEnd="@dimen/_8sdp"
         android:paddingRight="@dimen/_8sdp"
-        android:paddingBottom="@dimen/_8sdp"
+        android:paddingBottom="@dimen/_6sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         tools:listitem="@layout/item_container_filter" />
+
+    <ProgressBar
+        android:id="@+id/imageFiltersProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/filtersRecyclerView"
+        app:layout_constraintEnd_toEndOf="@id/filtersRecyclerView"
+        app:layout_constraintStart_toStartOf="@id/filtersRecyclerView"
+        app:layout_constraintTop_toTopOf="@id/filtersRecyclerView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
